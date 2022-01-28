@@ -44,7 +44,24 @@ async function run() {
             });
         })
 
-        //Add Cars
+        // update post status
+        app.put('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedUser = req.body;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: 'Activate'
+                },
+
+            }
+            const result = await serviceCollection.updateOne(filter, updateDoc, options)
+            console.log('updating user', req)
+            res.json(result)
+        })
+
+        //Add Blogs
         app.post('/services', async (req, res) => {
             const newServices = req.body;
             const result = await serviceCollection.insertOne(newServices)
